@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,7 +26,7 @@ class UserController extends AbstractController
     }
 
     #[Route("/users/create", name:"user_create")]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits')]
     public function createAction(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): Response
     {
         $user = new User();

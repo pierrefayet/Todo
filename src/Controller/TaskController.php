@@ -69,7 +69,7 @@ class TaskController extends AbstractController
     }
 
     #[Route("/tasks/{id}/toggle", name:"task_toggle")]
-    public function toggleTaskAction(Task $task, EntityManager $entityManager): RedirectResponse
+    public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager): RedirectResponse
     {
         $task->toggle(!$task->isDone());
         $entityManager->flush();
@@ -80,7 +80,7 @@ class TaskController extends AbstractController
     }
 
     #[Route("/tasks/{id}/delete", name:"task_delete")]
-    public function deleteTaskAction(Task $task, EntityManager $entityManager): RedirectResponse
+    public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager): RedirectResponse
     {
         $entityManager->remove($task);
         $entityManager->flush();
