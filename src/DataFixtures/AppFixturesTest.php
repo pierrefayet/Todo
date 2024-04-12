@@ -11,7 +11,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AppFixtures extends Fixture
+class AppFixturesTest extends Fixture
 {
     private readonly Generator $faker;
 
@@ -24,15 +24,17 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $testUser = $this->createUser('ROLE_USER', 'test');
+        $this->createTaskForUser($testUser);
         $this->createUsersWithTasks(10, 'ROLE_USER');
         $this->createUsersWithTasks(10, 'ROLE_ANONYME');
     }
 
-    private function createUser(string $role): User
+    private function createUser(string $role, string $username = null): User
     {
         $user = new User;
         $user->setPassword($this->hashed->hashPassword($user, 'password'));
-        $user->setUserName($this->faker->word());
+        $user->setUserName('test');
         $user->setEmail($this->faker->unique()->safeEmail());
         $user->setRoles([$role]);
         $this->manager->persist($user);
