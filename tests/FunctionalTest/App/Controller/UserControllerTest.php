@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\FunctionalTest\App\Controller;
 
 use App\Entity\User;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserControllerTest extends WebTestCase
@@ -15,7 +15,6 @@ class UserControllerTest extends WebTestCase
 
     public function setUp(): void
     {
-        parent::setUp();
         $this->client = static::createClient();
         $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
         $user = $userRepository->findOneByEmail('admin@todo.com');
@@ -24,6 +23,12 @@ class UserControllerTest extends WebTestCase
     }
 
     public function testCreateUser()
+    {
+        $this->client->request(Request::METHOD_POST, $this->urlGenerator->generate('user_create'));
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+
+    public function testListUser()
     {
         $this->client->request(Request::METHOD_POST, $this->urlGenerator->generate('user_create'));
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
