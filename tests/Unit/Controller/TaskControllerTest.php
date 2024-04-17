@@ -1,24 +1,27 @@
 <?php
 
-namespace App\Tests\FunctionalTest\App\Controller;
+namespace App\Tests\Unit\Controller;
 
-use App\Controller\SecurityController;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends WebTestCase
 {
-    private KernelBrowser|null $client = null;
+    private KernelBrowser $client;
 
     public function setUp(): void
     {
         $this->client = static::createClient();
         $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
         $user = $userRepository->findOneByEmail('admin@todo.com');
-        $this->urlGenerator = $this->client->getContainer()->get('router.default');
         $this->client->loginUser($user);
+    }
+
+    public function testListTask() {
+        $this->client->request('GET', '/');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     public function testEditActionWithAdminTest()
@@ -30,20 +33,17 @@ class TaskControllerTest extends WebTestCase
     }
 
 
-    public function createActionTest(): void
+    public function testCreateTask(): void
     {
-        $urlGenerator = $this->client->getContainer()->get('router.default');
-        $url = $urlGenerator->generate('task_create');
-
-        $crawler = $this->client->request(Request::METHOD_GET, $url);
-        $form = $crawler->selectButton('Save Task')->form([
+        $crawler = $this->client->request('GET', 'tasks/create');
+        $form = $crawler->selectButton('Ajouter')->form([
             'task[title]' => 'New Task Title',
-            'task[content]' => 'New Task Content',
+            'task[content]' => 'New Task Content'
         ]);
         $this->client->submit($form);
 
-        $this->assertResponseRedirects();
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $this->client->followRedirect();
-        $this->assertSelectorTextContains('.success', 'Vous n\'êtes pas autorisé à modifier cette tâche.');
+        $this->assertSelectorExists('.alert.alert-success');
     }
 }
