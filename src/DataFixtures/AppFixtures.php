@@ -27,6 +27,8 @@ class AppFixtures extends Fixture
     {
         $this->createUsersWithTasks(10, 'ROLE_USER');
         $this->createUsersWithTasks(10, 'ROLE_ANONYME');
+        $this->createAdmin();
+
     }
 
     private function createUser(string $role): User
@@ -49,6 +51,7 @@ class AppFixtures extends Fixture
         $adminUser->setEmail('admin@todo.com');
         $adminUser->setRoles(['ROLE_ADMIN']);
         $this->manager->persist($adminUser);
+        $this->manager->flush();
 
         return $adminUser;
     }
