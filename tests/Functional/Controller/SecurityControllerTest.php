@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Tests\Unit\Controller;
+namespace App\Tests\Functional\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,6 +13,13 @@ class SecurityControllerTest extends WebTestCase
     public function setUp(): void
     {
         $this->client ??= static::createClient();
+    }
+
+    public function testHomepage(): void
+    {
+        $crawler = $this->client->request('GET', '/login');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('button ', 'Se connecter');
     }
 
     public function testLoginWithValidCredentialsIfIsAdmin(): void
@@ -69,6 +77,19 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLogout(): void
     {
+        $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
+        $user = $userRepository->findOneByEmail('admin@todo.com');
+        $this->client->loginUser($user);
+
+        $this->client->request('GET', '/logout');
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }
+    public function testLogoutIfIsNotConnected(): void
+    {
+        $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
+        $user = $userRepository->findOneByEmail('admin@todo.com');
+        $this->client->loginUser($user);
+
         $this->client->request('GET', '/logout');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }

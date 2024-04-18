@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Controller;
+namespace App\Tests\Functional\Controller;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -22,32 +22,42 @@ class UserControllerTest extends WebTestCase
         $this->client->loginUser($user);
     }
 
-    public function testCreateUser()
-    {
-        $this->client->request(Request::METHOD_POST, $this->urlGenerator->generate('user_create'));
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-    }
-
     public function testListUser()
     {
         $this->client->request(Request::METHOD_POST, $this->urlGenerator->generate('user_create'));
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
-    public function testCreateAction()
+    public function testCreateUser()
     {
         $crawler = $this->client->request(Request::METHOD_GET, $this->urlGenerator->generate('user_create'));
+
         $form = $crawler->selectButton('Ajouter')->form();
         $form['user[username]'] = 'test';
         $form['user[password][first]'] = 'password';
         $form['user[password][second]'] = 'password';
-        $form['user[email]'] = 'toto@gmail.com';
+        $form['user[email]'] = 'erdgerg@gmail.com';
+        $form['user[roles]'] = "ROLE_USER";
+        $this->client->submit($form);
+        //dump($form['user[roles]'][0]);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->client->followRedirect();
+        $this->assertSelectorTextContains('.alert.alert-success', 'Superbe ! L\'utilisateur a bien été ajouté.');
+    }
+
+    public function testEditUser()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, $this->urlGenerator->generate('user_edit', ['id' => 1]));
+        $form = $crawler->selectButton('Modifier')->form();
+        $form['user[username]'] = 'newUser';
+        $form['user[password][first]'] = 'password';
+        $form['user[password][second]'] = 'password';
+        $form['user[email]'] = 'newUser@gmail.com';
         $form['user[roles][0]']->tick();
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect(), "The form submission should lead to a redirect.");
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
         $this->client->followRedirect();
-
-
-        $this->assertSelectorTextContains('div.alert.alert-success', 'L\'utilisateur a bien été ajouté.');
+        $this->assertSelectorTextContains('.alert.alert-success', 'Superbe ! L\'utilisateur a bien été modifié');
     }
 }

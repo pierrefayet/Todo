@@ -27,7 +27,7 @@ class UserController extends AbstractController
 
     #[Route("/users/create", name:"user_create")]
     #[IsGranted('ROLE_ADMIN', message: 'Vous n\'avez pas les droits')]
-    public function createAction(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): Response
+    public function createUser(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -49,7 +49,7 @@ class UserController extends AbstractController
     }
 
     #[Route("/users/{id}/edit", name:"user_edit")]
-    public function editAction(User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): RedirectResponse|Response
+    public function editUser(User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): RedirectResponse|Response
     {
         $form = $this->createForm(UserType::class, $user);
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\UnitTest\Service;
+namespace App\Tests\Unit\Service;
 
 use App\Entity\Task;
 use App\Entity\User;
-use App\Service\Tasksubscriber;
+use App\Subscriber\Tasksubscriber;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -30,6 +30,6 @@ class TaskSubscriberTest extends WebTestCase
         $task = new Task();
         $subscriber = new TaskSubscriber($security);
         $subscriber->subscribe($task);
-        $this->assertSame($task->getUser(), "Aucun utilisateur ne doit être assigné à la tâche si aucun n'est connecté.");
+        $this->assertSame(null, $task->getUser(), "Aucun utilisateur ne doit être assigné à la tâche si aucun n'est connecté.");
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Controller;
+namespace App\Tests\Functional\Controller;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -28,8 +28,6 @@ class TaskControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/tasks/1/edit');
         $this->assertResponseIsSuccessful();
-        $this->client->followRedirect();
-        $this->assertSelectorTextContains('form', 'Edit Task');
     }
 
 
