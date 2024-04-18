@@ -36,7 +36,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['username'] = 'quis';
+        $form['username'] = 'admin';
         $form['password'] = 'password';
         $this->client->submit($form);
         $this->assertResponseRedirects('/');

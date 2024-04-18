@@ -25,9 +25,12 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $this->createUsersWithTasks(10, 'ROLE_USER');
-        $this->createUsersWithTasks(10, 'ROLE_ANONYME');
+        $this->createUsersWithTasks('ROLE_USER');
+        $this->createUsersWithTasks('ROLE_ANONYME');
         $this->createAdmin();
+        $this->createTaskForUserTest($this-> createUserTest());
+        $this->createOtherUserTest();
+        $this->manager->flush();
 
     }
 
@@ -43,7 +46,40 @@ class AppFixtures extends Fixture
         return $user;
     }
 
-    private function createAdmin(): User
+    private function createUserTest(): User
+    {
+        $testUser = new User;
+        $testUser->setPassword($this->hashed->hashPassword($testUser, 'password'));
+        $testUser->setUserName('test');
+        $testUser->setEmail('test@test.com');
+        $testUser->setRoles(['ROLE_USER']);
+        $this->manager->persist($testUser);
+
+        return $testUser;
+    }
+
+    private function createOtherUserTest(): User
+    {
+        $testUser = new User;
+        $testUser->setPassword($this->hashed->hashPassword($testUser, 'password'));
+        $testUser->setUserName('test2');
+        $testUser->setEmail('test2@test.com');
+        $testUser->setRoles(['ROLE_USER']);
+        $this->manager->persist($testUser);
+
+        return $testUser;
+    }
+
+    private function createTaskForUserTest(User $user): void
+    {
+            $task = new Task();
+            $task->setTitle($this->faker->sentence());
+            $task->setContent($this->faker->sentence());
+            $task->setUser($user);
+            $this->manager->persist($task);
+    }
+
+    private function createAdmin(): void
     {
         $adminUser = new User;
         $adminUser->setPassword($this->hashed->hashPassword($adminUser, 'password'));
@@ -51,9 +87,7 @@ class AppFixtures extends Fixture
         $adminUser->setEmail('admin@todo.com');
         $adminUser->setRoles(['ROLE_ADMIN']);
         $this->manager->persist($adminUser);
-        $this->manager->flush();
 
-        return $adminUser;
     }
 
     private function createTaskForUser(User $user): void
@@ -67,13 +101,11 @@ class AppFixtures extends Fixture
         }
     }
 
-    private function createUsersWithTasks(int $number, string $role): void
+    private function createUsersWithTasks(string $role): void
     {
-        for ($i = 0; $i < $number; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $user = $this->createUser($role);
             $this->createTaskForUser($user);
         }
-
-        $this->manager->flush();
     }
 }

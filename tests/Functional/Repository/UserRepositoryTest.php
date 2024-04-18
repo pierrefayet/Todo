@@ -4,7 +4,6 @@ namespace App\Tests\Functional\Repository;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class UserRepositoryTest extends KernelTestCase
 {
@@ -20,7 +19,7 @@ class UserRepositoryTest extends KernelTestCase
     {
         $user = new User();
         $user->setUsername('test_user');
-        $user->setEmail('test@test.com');
+        $user->setEmail('test1@test.com');
         $user->setPassword('existing_password');
         $this->entityManager->persist($user);
         $this->entityManager->flush();

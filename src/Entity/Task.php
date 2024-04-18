@@ -42,16 +42,6 @@ class Task
         return $this->id;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
@@ -85,12 +75,6 @@ class Task
     public function toggle($flag): void
     {
         $this->isDone = $flag;
-    }
-
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getUser(): ?User

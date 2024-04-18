@@ -12,14 +12,15 @@ class UserControllerTest extends WebTestCase
 {
     private KernelBrowser|null $client = null;
     private ?object $urlGenerator;
+    private User $user;
 
     public function setUp(): void
     {
         $this->client = static::createClient();
         $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
-        $user = $userRepository->findOneByEmail('admin@todo.com');
+        $this->user = $userRepository->findOneByEmail('admin@todo.com');
         $this->urlGenerator = $this->client->getContainer()->get('router.default');
-        $this->client->loginUser($user);
+        $this->client->loginUser($this->user);
     }
 
     public function testListUser()
@@ -37,9 +38,8 @@ class UserControllerTest extends WebTestCase
         $form['user[password][first]'] = 'password';
         $form['user[password][second]'] = 'password';
         $form['user[email]'] = 'ergerg@gmail.com';
-        $form['user[roles]'][0]->tick();
+        $form['user[roles]'][1]->tick();
         $this->client->submit($form);
-        //dump($form['user[roles]'][0]);
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $this->client->followRedirect();
         $this->assertSelectorTextContains('.alert.alert-success', 'Superbe ! L\'utilisateur a bien été ajouté.');
@@ -47,13 +47,13 @@ class UserControllerTest extends WebTestCase
 
     public function testEditUser()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, $this->urlGenerator->generate('user_edit', ['id' => 1]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->urlGenerator->generate('user_edit', ['id' => $this->user->getId()]));
         $form = $crawler->selectButton('Modifier')->form();
         $form['user[username]'] = 'newUser';
         $form['user[password][first]'] = 'password';
         $form['user[password][second]'] = 'password';
         $form['user[email]'] = 'newUser@gmail.com';
-        $form['user[roles][0]']->tick();
+        $form['user[roles]'][1]->tick();
         $this->client->submit($form);
 
         $this->assertTrue($this->client->getResponse()->isRedirect());
