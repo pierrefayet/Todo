@@ -18,7 +18,8 @@ class AppFixtures extends Fixture
     public function __construct(
         private readonly UserPasswordHasherInterface $hashed,
         private readonly EntityManagerInterface      $manager,
-    ) {
+    )
+    {
         $this->faker = Factory::create('fr_FR');
     }
 
@@ -38,6 +39,18 @@ class AppFixtures extends Fixture
         $this->manager->persist($user);
 
         return $user;
+    }
+
+    private function createAdmin(string $role): User
+    {
+        $AdminUser = new User;
+        $AdminUser->setPassword($this->hashed->hashPassword($AdminUser, 'password'));
+        $AdminUser->setUserName('admin');
+        $AdminUser->setEmail('admin@todo.com');
+        $AdminUser->setRoles(['ROLE_ADMIN']);
+        $this->manager->persist($AdminUser);
+
+        return $AdminUser;
     }
 
     private function createTaskForUser(User $user): void

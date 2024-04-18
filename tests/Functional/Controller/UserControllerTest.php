@@ -36,8 +36,8 @@ class UserControllerTest extends WebTestCase
         $form['user[username]'] = 'test';
         $form['user[password][first]'] = 'password';
         $form['user[password][second]'] = 'password';
-        $form['user[email]'] = 'erdgerg@gmail.com';
-        $form['user[roles]'] = "ROLE_USER";
+        $form['user[email]'] = 'ergerg@gmail.com';
+        $form['user[roles]'][0]->tick();
         $this->client->submit($form);
         //dump($form['user[roles]'][0]);
         $this->assertTrue($this->client->getResponse()->isRedirect());
