@@ -41,16 +41,16 @@ class AppFixtures extends Fixture
         return $user;
     }
 
-    private function createAdmin(string $role): User
+    private function createAdmin(): User
     {
-        $AdminUser = new User;
-        $AdminUser->setPassword($this->hashed->hashPassword($AdminUser, 'password'));
-        $AdminUser->setUserName('admin');
-        $AdminUser->setEmail('admin@todo.com');
-        $AdminUser->setRoles(['ROLE_ADMIN']);
-        $this->manager->persist($AdminUser);
+        $adminUser = new User;
+        $adminUser->setPassword($this->hashed->hashPassword($adminUser, 'password'));
+        $adminUser->setUserName('admin');
+        $adminUser->setEmail('admin@todo.com');
+        $adminUser->setRoles(['ROLE_ADMIN']);
+        $this->manager->persist($adminUser);
 
-        return $AdminUser;
+        return $adminUser;
     }
 
     private function createTaskForUser(User $user): void
