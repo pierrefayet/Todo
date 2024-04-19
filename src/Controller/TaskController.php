@@ -6,23 +6,19 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TaskController extends AbstractController
 {
-
-    private function checkUpPermission(Task $task): bool
+    public function checkUpPermission(Task $task): bool
     {
         $currentUser = $this->getUser();
-        if(!$currentUser instanceof User) {
+        if (!$currentUser instanceof User) {
             throw new \Exception('$currentUser n\'est pas une instance de User');
         }
         return $task->getUser() === $currentUser || in_array('ROLE_ADMIN', $currentUser->getRoles());
@@ -32,7 +28,7 @@ class TaskController extends AbstractController
     public function listAction(TaskRepository $taskRepository): Response
     {
         $currentUser = $this->getUser();
-        if (in_array('ROLE_ADMIN', $currentUser->getRoles())) {
+        if ($currentUser !== null && in_array('ROLE_ADMIN', $currentUser->getRoles())) {
             return $this->render('task/list.html.twig', ['tasks' => $taskRepository->findAll()]);
         }
 

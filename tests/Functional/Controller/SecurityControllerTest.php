@@ -19,7 +19,12 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('button ', 'Se connecter');
+        dump($crawler->filter('html')->text());
+        $this->assertSelectorTextContains('html', 'To Do List App');
+        $this->assertSelectorTextContains('html', 'Nom d\'utilisateur :');
+        $this->assertSelectorTextContains('html', 'Mot de passe :');
+        $this->assertSelectorTextContains('.btn-success', 'Se connecter');
+        $this->assertSelectorTextContains('html', 'Copyright © OpenClassrooms');
     }
 
     public function testLoginWithValidCredentialsIfIsAdmin(): void
@@ -36,7 +41,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['username'] = 'admin';
+        $form['username'] = 'test';
         $form['password'] = 'password';
         $this->client->submit($form);
         $this->assertResponseRedirects('/');
@@ -92,5 +97,8 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->request('GET', '/logout');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->client->followRedirect();
+        $location = $this->client->getResponse()->headers->get('Location');
+        $this->assertEquals('/login', $location);
     }
 }

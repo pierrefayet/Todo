@@ -1,4 +1,4 @@
-@import "~bootstrap/scss/bootstrap";
+@import url("~bootstrap/scss/bootstrap");
 body {
     padding-top: 70px;
     /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
@@ -48,4 +48,34 @@ body {
 
 footer {
     margin: 50px 0;
+}
+
+.card {
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
+}
+
+.card-list {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
+    margin: 5px;
+
+    &:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-img-top {
+        &:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+    }
 }

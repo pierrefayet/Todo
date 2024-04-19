@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace Fixtures;
 
 use App\Entity\Task;
 use App\Entity\User;
@@ -11,7 +11,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AppFixtures extends Fixture
+class Fixtures extends Fixture
 {
     private readonly Generator $faker;
 

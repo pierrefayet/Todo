@@ -15,9 +15,6 @@ class Task
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private \DateTimeImmutable $createdAt;
-
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -33,7 +30,6 @@ class Task
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
         $this->isDone = false;
     }
 
@@ -67,12 +63,7 @@ class Task
         return $this->isDone;
     }
 
-    public function setIsDone(bool $isDone): void
-    {
-        $this->isDone = $isDone;
-    }
-
-    public function toggle($flag): void
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
     }

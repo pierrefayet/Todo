@@ -3,6 +3,7 @@
 namespace App\Subscriber;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -15,8 +16,9 @@ readonly class TaskSubscriber
     }
     public function subscribe(Task $task): void
     {
-        if($this->security->getUser() !== null) {
-            $task->setUser($this->security->getUser());
+        $user = $this->security->getUser();
+        if ($user instanceof User) {
+            $task->setUser($user);
         }
     }
 }

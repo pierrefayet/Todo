@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Controller;
 
+use App\Entity\Task;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -59,5 +60,34 @@ class UserControllerTest extends WebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $this->client->followRedirect();
         $this->assertSelectorTextContains('.alert.alert-success', 'Superbe ! L\'utilisateur a bien été modifié');
+    }
+
+    public function testDeleteUserWithAdminTest()
+    {
+        $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
+        $user = $userRepository->findOneByEmail('admin@todo.com');
+        $user1 = $userRepository->findOneByEmail('test@test.com');
+        $this->client->loginUser($user);
+        $this->client->request('GET', uri: "/users/{$user1->getId()}/delete");
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->client->followRedirect();
+        $this->assertSelectorTextContains('.alert.alert-success', 'Superbe ! L\'utilisateur a bien été supprimée.');
+    }
+
+    public function testDeleteUserWithUserAndCheckIfIsDeleteInBaseAndHisTask(): void
+    {
+        $userRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class);
+        $user = $userRepository->findOneByEmail('admin@todo.com');
+        $this->client->loginUser($user);
+        $user1 = $userRepository->findOneByEmail('test@test.com');
+        $taskRepository = $this->client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(Task::class);
+        $countTaskBeforeAdded = count($taskRepository->findAll());
+        $countUserBeforeAdded = count($userRepository->findAll());
+        $this->client->loginUser($user);
+        $this->client->request('GET', uri: "/users/{$user1->getId()}/delete");
+        $countTaskAfterAdded = count($taskRepository->findAll());
+        $countUserAfterAdded = count($userRepository->findAll());
+        $this->assertEquals($countTaskBeforeAdded - 1, $countTaskAfterAdded);
+        $this->assertEquals($countUserBeforeAdded - 1, $countUserAfterAdded);
     }
 }

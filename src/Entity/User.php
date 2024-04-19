@@ -40,6 +40,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'user', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $tasks;
+
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
