@@ -14,7 +14,7 @@ final class Version20240419080802 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'This migration alters the task table to adjust the foreign key constraints.';
     }
 
     public function up(Schema $schema): void

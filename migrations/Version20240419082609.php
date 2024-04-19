@@ -14,7 +14,7 @@ final class Version20240419082609 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Drops and recreates foreign key FK_527EDB25A76ED395 for user_id in the task table.';
     }
 
     public function up(Schema $schema): void
