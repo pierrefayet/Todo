@@ -21,7 +21,9 @@ jobs:
                       - v1-dependencies-{{ checksum "composer.json" }}
                       - v1-dependencies-
 
-            - run: composer install -n --prefer-dist
+            - run: sudo apt-get install php8.3-xml php8.3-mbstring
+            - run: composer clear-cache
+            - run: composer install -n --prefer-dist -vvv
 
             - save_cache:
                   key: v1-dependencies-{{ checksum "composer.json" }}

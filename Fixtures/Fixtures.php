@@ -34,6 +34,7 @@ class Fixtures extends Fixture
 
     }
 
+
     private function createUser(string $role): User
     {
         $user = new User;
