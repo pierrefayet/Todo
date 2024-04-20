@@ -12,13 +12,24 @@ jobs:
         steps:
             - checkout
             - run: sudo apt update && sudo apt install -y libzip-dev unzip
+            - restore_cache:
+                    keys:
+                        - v1-dependencies-{{ checksum "composer.json" }}
+                        - v1-dependencies-
+
+            - save_cache:
+                    paths:
+                        - ./vendor
+                    key: v1-dependencies-{{ checksum "composer.json" }}
+            - store_artifacts:
+                    path: path/to/test-reports
+                    destination: test-reports
             - run:
                   name: Install Composer Dependencies
                   command: composer install --prefer-dist --no-interaction
             - run:
                   name: Set Up Database
                   command: |
-                      # Commandes pour configurer la base de données si nécessaire
                       php bin/console doctrine:database:create --env=test
                       php bin/console doctrine:migrations:migrate --env=test --no-interaction
             - run:
