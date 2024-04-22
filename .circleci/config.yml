@@ -30,6 +30,7 @@ jobs:
                       - ./vendor
             - run: yes | php bin/console doctrine:schema:update -f --env=test || true
             - run: yes | php bin/console doctrine:fixtures:load --env=test || true
+            - run: npm install
             - run: npm run build
             - run: vendor/bin/phpstan
             - run: vendor/bin/phpunit
