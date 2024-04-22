@@ -6,6 +6,8 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
+use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,15 +17,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TaskController extends AbstractController
 {
-    public function checkUpPermission(Task $task): bool
+    public function __construct(private readonly SecurityService $securityService)
     {
-        $currentUser = $this->getUser();
-        if (!$currentUser instanceof User) {
-            throw new \Exception('$currentUser n\'est pas une instance de User');
-        }
-        return $task->getUser() === $currentUser || in_array('ROLE_ADMIN', $currentUser->getRoles());
     }
-
     #[Route("/", name: "task_list")]
     public function listAction(TaskRepository $taskRepository): Response
     {
@@ -58,7 +54,7 @@ class TaskController extends AbstractController
     #[Route("/tasks/{id}/edit", name: "task_edit")]
     public function editAction(Task $task, Request $request, EntityManagerInterface $entityManager): RedirectResponse|Response
     {
-        if (!$this->checkUpPermission($task)) {
+        if (!$this->securityService->checkUpPermission($task)) {
             $this->addFlash('error', 'Vous n\'êtes pas autorisé à modifier cette tâche.');
 
             return $this->redirectToRoute('task_list');
@@ -84,7 +80,7 @@ class TaskController extends AbstractController
     #[Route("/tasks/{id}/toggle", name: "task_toggle")]
     public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager): RedirectResponse
     {
-        if (!$this->checkUpPermission($task)) {
+        if (!$this->securityService->checkUpPermission($task)) {
             $this->addFlash('error', 'Vous n\'êtes pas autorisé à modifier cette tâche.');
 
             return $this->redirectToRoute('task_list');
@@ -101,7 +97,7 @@ class TaskController extends AbstractController
     #[Route("/tasks/{id}/delete", name: "task_delete")]
     public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager): RedirectResponse
     {
-        if (!$this->checkUpPermission($task)) {
+        if (!$this->securityService->checkUpPermission($task)) {
             $this->addFlash('error', 'Vous n\'êtes pas autorisé à modifier cette tâche.');
 
             return $this->redirectToRoute('task_list');

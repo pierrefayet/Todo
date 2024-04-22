@@ -61,7 +61,6 @@ class TaskControllerTest extends WebTestCase
         $task = $taskRepository->findOneBy(['user' => $user]);
         $this->client->loginUser($user);
         $crawler =  $this->client->request('GET', uri: "/tasks/{$task->getId()}/edit");
-        //dump($crawler);
         $form = $crawler->selectButton('Modifier')->form([
             'task[title]' => 'New Task Title test',
             'task[content]' => 'New Task Content test'
