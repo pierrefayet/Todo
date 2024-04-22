@@ -28,7 +28,6 @@ jobs:
                   key: v1-dependencies-{{ checksum "composer.json" }}
                   paths:
                       - ./vendor
-            - run: yes | php bin/console doctrine:schema:create -f --env=test || true
             - run: yes | php bin/console doctrine:schema:update -f --env=test || true
             - run: yes | php bin/console doctrine:fixtures:load --env=test || true
             - run: vendor/bin/phpstan
