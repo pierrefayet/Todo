@@ -30,6 +30,9 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory>vendor/</directory>
+        </exclude>
     </coverage>
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
