@@ -30,3 +30,4 @@ jobs:
                       - ./vendor
             - run: yes | php bin/console doctrine:fixtures:load --env=test || true
             - run: vendor/bin/phpstan
+            - run: vendor/bin/phpunit
