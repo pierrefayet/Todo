@@ -19,7 +19,6 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
-        dump($crawler->filter('html')->text());
         $this->assertSelectorTextContains('html', 'To Do List App');
         $this->assertSelectorTextContains('html', 'Nom d\'utilisateur :');
         $this->assertSelectorTextContains('html', 'Mot de passe :');
