@@ -9,10 +9,12 @@ jobs:
             - image: cimg/mysql:8.0.33
               environment:
                   MYSQL_DATABASE: todo_test
-                  MYSQL_ROOT_PASSWORD: password
+                  MYSQL_ROOT_PASSWORD: root
 
         steps:
             - checkout
+            - run: echo "APP_ENV=test" >> .env.local
+            - run: echo "DATABASE_URL=mysql://app:!ChangeMe!@127.0.0.1:3306/todo_test" >> .env.local
 
             - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
 
