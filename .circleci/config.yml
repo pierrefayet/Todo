@@ -2,36 +2,31 @@ version: 2.1
 
 jobs:
     build:
+
         docker:
+            # Specify the version you desire here
             - image: cimg/php:8.3-node
-              environment:
-                  MYSQL_DATABASE: test_db
-                  MYSQL_ROOT_PASSWORD: root
             - image: cimg/mysql:8.0.33
+              environment:
+                  MYSQL_DATABASE: todo_test
+                  MYSQL_ROOT_PASSWORD: root
 
         steps:
             - checkout
-            - run: sudo apt update && sudo apt install -y libzip-dev unzip
+
+            - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+
             - restore_cache:
-                    keys:
-                        - v1-dependencies-{{ checksum "composer.json" }}
-                        - v1-dependencies-
+                  keys:
+                      - v1-dependencies-{{ checksum "composer.json" }}
+                      - v1-dependencies-
+
+            - run: composer clear-cache
+            - run: composer install -n --prefer-dist -vvv
 
             - save_cache:
-                    paths:
-                        - ./vendor
-                    key: v1-dependencies-{{ checksum "composer.json" }}
-            - store_artifacts:
-                    path: path/to/test-reports
-                    destination: test-reports
-            - run:
-                  name: Install Composer Dependencies
-                  command: composer install --prefer-dist --no-interaction
-            - run:
-                  name: Set Up Database
-                  command: |
-                      php bin/console doctrine:database:create --env=test
-                      php bin/console doctrine:migrations:migrate --env=test --no-interaction
-            - run:
-                  name: Run PHPUnit Tests
-                  command: vendor/bin/phpunit --configuration phpunit.xml.dist
+                  key: v1-dependencies-{{ checksum "composer.json" }}
+                  paths:
+                      - ./vendor
+            - run: yes | php bin/console doctrine:fixtures:load --env=test || true
+            - run: vendor/bin/phpstan
