@@ -1,8 +1,9 @@
 # Todo
 
-[![SymfonyInsight](https://insight.symfony.com/projects/7c26401c-056c-450c-86c8-8e182a4edb48/small.svg)]
+[![SymfonyInsight](https://insight.symfony.com/projects/28622bf2-1b20-47aa-b67f-f4fdac60d8c1/small.svg)]
 
 ## Description
+
 
 
 
@@ -17,7 +18,7 @@
 
 ## Prerequisites
 
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer
 - MySQL or any other database management system compatible with Doctrine
 

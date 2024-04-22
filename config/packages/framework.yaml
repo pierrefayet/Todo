@@ -13,5 +13,5 @@ when@test:
     framework:
         test: true
         session:
-            cookie_name: 'SESS_ID'
+            name: 'SESS_ID'
             storage_factory_id: session.storage.factory.mock_file
