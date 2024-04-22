@@ -1,0 +1,9 @@
+{
+  "short_name": "SnowTrick",
+  "name": "Todo",
+  "start_url": "/login",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+
+}
