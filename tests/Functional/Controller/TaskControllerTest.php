@@ -4,7 +4,6 @@ namespace App\Tests\Functional\Controller;
 
 use App\Entity\Task;
 use App\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;

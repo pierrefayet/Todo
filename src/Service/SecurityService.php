@@ -8,7 +8,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 readonly class SecurityService
 {
-    public function __construct(private readonly Security $security)
+    public function __construct(private Security $security)
     {
     }
     public function checkUpPermission(Task $task): bool

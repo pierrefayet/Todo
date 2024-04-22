@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Task;
-use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
