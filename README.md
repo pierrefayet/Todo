@@ -4,25 +4,16 @@
 
 ## Description
 
-Bilemo is an innovative API solution designed to provide a mobile phone catalog to resale platforms.
-Leveraging modern standards, Bilemo aims to simplify the integration and catalog management process for its business
-partners.
+
 
 ## Features
 
-- Mobile Catalog: Access a wide range of mobile phones, complete with detailed information for each product.
-- User Management: Allows partner platforms to manage their users.
-- Secure Authentication: Utilizes JWT (JSON Web Tokens) to secure access to the API.
-- snowboard tricks gallery with tutorials posted by members
-- API Documentation: Comprehensive documentation available through NelmioApiDoc for easy integration.
 
 ## Technologies Used
 
 - Symfony 7
 - PHP 8.2
 - Doctrine ORM
-- LexikJWTAuthenticationBundle
-- NelmioApiDocBundle
 
 ## Prerequisites
 
@@ -34,8 +25,8 @@ partners.
 
 ```bash
 # Clone 
-git clone https://github.com/pierrefayet/Projet-7-Bilemo.git
-cd Projet-7-Bilemo
+git clone https://github.com/pierrefayet/Todo.git
+cd Todo
 composer install
 php bin/console doctrine:database:create
 # Create the BDD and import the schema
@@ -46,11 +37,11 @@ symfony server:start
 
 ## Utilisation
 
-After installation, open your browser and go to https://localhost:8000/api/doc to learn to consume the Bilemo Api.
+After installation, open your browser and go to https://localhost:8000.
 
 ## Creating Admin User via Command Line
 
-Bilemo offers a command line utility to easily create an admin user. This can be particularly useful for setting up the application or creating an admin user for testing purposes.
+Todo offers a command line utility to easily create an admin user. This can be particularly useful for setting up the application or creating an admin user for testing purposes.
 
 ### Command
 The command to create an admin user is as follows:
