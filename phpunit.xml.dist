@@ -32,6 +32,7 @@
         </include>
         <exclude>
             <directory>vendor/</directory>
+            <directory>tools/</directory>
         </exclude>
     </coverage>
     <listeners>
