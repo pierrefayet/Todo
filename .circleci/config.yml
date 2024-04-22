@@ -9,6 +9,7 @@ jobs:
             - image: cimg/mysql:8.0.33
               environment:
                   MYSQL_DATABASE: todo_test
+                  MYSQL_USER: root
                   MYSQL_ROOT_PASSWORD: root
 
         steps:
