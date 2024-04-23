@@ -74,6 +74,9 @@ http://localhost:63342/Todo/public/test-coverage/dashboard.html?_ijt=vtmvbrjq8ul
 If you have questions or need help getting started, feel free to create an issue in the repository or contact me.
 
 We look forward to seeing your contributions!
+### Contributing
+
+For more information on how to contribute to this project, please consult our [contribution guide](CONTRIBUTING.md)
 
 ## Authors
 
