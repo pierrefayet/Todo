@@ -15,9 +15,6 @@ class Task
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private \DateTimeImmutable $createdAt;
-
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -33,23 +30,12 @@ class Task
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
         $this->isDone = false;
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): void
-    {
-        $this->createdAt = $createdAt;
     }
 
     public function getTitle(): ?string
@@ -77,20 +63,9 @@ class Task
         return $this->isDone;
     }
 
-    public function setIsDone(bool $isDone): void
-    {
-        $this->isDone = $isDone;
-    }
-
-    public function toggle($flag): void
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
-    }
-
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getUser(): ?User

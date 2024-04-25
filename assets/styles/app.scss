@@ -49,3 +49,32 @@ body {
 footer {
     margin: 50px 0;
 }
+
+.card {
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
+}
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
+    margin: 5px;
+
+    &:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-img-top {
+        &:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+    }
+}

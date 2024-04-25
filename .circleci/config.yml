@@ -5,10 +5,10 @@ jobs:
 
         docker:
             # Specify the version you desire here
-            - image: cimg/php:8.2-node
+            - image: cimg/php:8.3-node
             - image: cimg/mysql:8.0.33
               environment:
-                  MYSQL_DATABASE: circle_test
+                  MYSQL_DATABASE: todo_test
                   MYSQL_ROOT_PASSWORD: root
 
         steps:
@@ -21,11 +21,24 @@ jobs:
                       - v1-dependencies-{{ checksum "composer.json" }}
                       - v1-dependencies-
 
-            - run: composer install -n --prefer-dist
+            - run: composer clear-cache
+            - run: composer install -n --prefer-dist -vvv
 
             - save_cache:
                   key: v1-dependencies-{{ checksum "composer.json" }}
                   paths:
                       - ./vendor
+            - run: yes | php bin/console doctrine:schema:update -f --env=test || true
             - run: yes | php bin/console doctrine:fixtures:load --env=test || true
+            - restore_cache:
+                  keys:
+                    - node-v1-{{ checksum "package.json" }}
+                    - node-v1-
+            - run: npm install
+            - save_cache:
+                 key: node-v1-{{ checksum "package.json" }}
+                 paths:
+                    - node_modules
+            - run: npm run build
             - run: vendor/bin/phpstan
+            - run: vendor/bin/phpunit

@@ -7,50 +7,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <title>To Do List app</title>
 
-    <!-- Bootstrap Core CSS -->
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"
-            integrity="sha512-UDJtJXfzfsiPPgnI5S1000FPLBHMhvzAMX15I+qG2E2OAzC9P1JzUwJOfnypXiOH7MRPaqzhPbBGDNNj7zBfoA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"
-            integrity="sha512-qWVvreMuH9i0DrugcOtifxdtZVBBL0X75r9YweXsdCHtXUidlctw7NXg5KVP3ITPtqZ2S575A0wFkvgS2anqSA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <![endif]-->
     {{ encore_entry_link_tags('app') }}
 </head>
 
 <body>
-<nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;" role="navigation">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #e3f2fd;">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">To Do List app</a>
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms" height="30">
+            To Do List App
+        </a>
 
-            <img src="{{ asset('img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms" />
+        <!-- Toggler/collapsible Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('user_create') }}">Créer un utilisateur</a>
+                    </li>
+                {% endif %}
+
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('user_edit', {'id': app.user.id}) }}">Editer son profil</a>
+                    </li>
+                {% endif %}
+
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('user_list') }}">Consulter la liste des utilisateurs</a>
+                    </li>
+                {% endif %}
+
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </nav>
 
 <!-- Page Content -->
 <div class="container">
-    <div class="row">
-        <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
-
-        {% if app.user %}
-            <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
-        {% endif %}
-
-        {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-            <a href="{{ path('login') }}" class="btn btn-success">Se connecter</a>
-        {% endif %}
-    </div>
-
     <div class="row">
         <div class="col-md-12">
             {% for flash_message in app.session.flashBag.get('success') %}
@@ -67,6 +76,10 @@
 
             {% block header_title %}{% endblock %}
             {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">{% endblock %}
+
+            {% if app.user %}
+                <a href="{{ path('task_list') }}" class="btn btn-info d-sm-flex justify-content-center m-1">Consulter la liste des tasks</a>
+            {% endif %}
         </div>
     </div>
 
@@ -95,4 +108,3 @@
 {{ encore_entry_script_tags('app') }}
 </body>
 </html>
-

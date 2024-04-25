@@ -1,14 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block header_title %}<h1>Créer un utilisateur</h1>{% endblock %}
+{% block header_title %}
+    <h1>Créer un utilisateur</h1>
+{% endblock %}
 {% block header_img %}{% endblock %}
 
 {% block body %}
-    <div class="row">
-        {{ form_start(form, {'action' : path('user_create')}) }}
-            {{ form_widget(form) }}
-
-            <button type="submit" class="btn btn-success pull-right">Ajouter</button>
-        {{ form_end(form) }}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                {{ form_start(form, {'action': path('user_create'), 'attr': {'class': 'form-horizontal'}}) }}
+                <div class="card">
+                    <div class="card-header">
+                        Créer un nouvel utilisateur
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            {{ form_label(form.username) }}
+                            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.username) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password.first) }}
+                            {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.password.first) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password.second) }}
+                            {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.password.second) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.roles) }}
+                            <div>
+                                {% for child in form.roles %}
+                                    <div class="form-check form-check-inline mr-3">
+                                        {{ form_widget(child, {'attr': {'class': 'form-check-input'}}) }}
+                                        {{ form_label(child, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {{ form_errors(form.roles) }}
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-success">Ajouter</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

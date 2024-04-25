@@ -5,4 +5,5 @@ parameters:
         - config/
         - public/
         - src/
-        - tests/
+    ignoreErrors:
+           - '#^Property App\\Entity\\User::\$tasks is never read, only written\.$#'

@@ -1,11 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="row">
-        {{ form_start(form, {'action' : path('task_edit', { 'id' : task.id })}) }}
-            {{ form_widget(form) }}
-
-            <button type="submit" class="btn btn-success pull-right">Modifier</button>
-        {{ form_end(form) }}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                {{ form_start(form, {'action': path('task_edit', {'id': task.id}), 'attr': {'class': 'form-horizontal'}}) }}
+                <div class="card">
+                    <div class="card-header">
+                        Modifier la tâche
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            {{ form_label(form.title) }}
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.content) }}
+                            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
+                            {{ form_errors(form.content) }}
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-success pull-right">Modifier</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
     </div>
 {% endblock %}
