@@ -21,7 +21,7 @@ class SecurityServiceTest extends WebTestCase
         $task->setUser($fakeUser);
         $service = new SecurityService($security);
         $AsPermission = $service->checkUpPermission($task);
-        $this->assertSame($AsPermission, true, "L'utilisateur doit être assigné à la tâche lors de la création.");
+        $this->assertSame($AsPermission, true);
     }
 
     public function testSecurityFail(): void
@@ -35,7 +35,7 @@ class SecurityServiceTest extends WebTestCase
         $task->setUser($user2);
         $service = new SecurityService($security);
         $AsPermission = $service->checkUpPermission($task);
-        $this->assertSame($AsPermission, false, "Aucun utilisateur ne doit être assigné à la tâche si aucun n'est connecté.");
+        $this->assertSame($AsPermission, false);
     }
 
     public function testSecurityFailWithException(): void
