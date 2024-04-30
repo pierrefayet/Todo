@@ -39,7 +39,6 @@ class UserType extends AbstractType
                         'message' => 'Veuillez sélectionner au moins un rôle.',
                     ]),
                 ],
-                'data' => ['ROLE_USER']
             ]);
     }
 
