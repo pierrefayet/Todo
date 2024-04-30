@@ -50,6 +50,9 @@ class UserController extends AbstractController
     public function editUser(User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): RedirectResponse|Response
     {
         $form = $this->createForm(UserType::class, $user);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $form->remove('roles');
+        }
 
         $form->handleRequest($request);
 
