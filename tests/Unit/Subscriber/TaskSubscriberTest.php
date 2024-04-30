@@ -19,7 +19,7 @@ class TaskSubscriberTest extends WebTestCase
         $task = new Task();
         $subscriber = new TaskSubscriber($security);
         $subscriber->subscribe($task);
-        $this->assertSame($user, $task->getUser(), "L'utilisateur doit être assigné à la tâche lors de la création.");
+        $this->assertSame($user, $task->getUser());
     }
 
     public function testSubscriberWithoutUser()
@@ -30,6 +30,6 @@ class TaskSubscriberTest extends WebTestCase
         $task = new Task();
         $subscriber = new TaskSubscriber($security);
         $subscriber->subscribe($task);
-        $this->assertSame(null, $task->getUser(), "Aucun utilisateur ne doit être assigné à la tâche si aucun n'est connecté.");
+        $this->assertSame(null, $task->getUser());
     }
 }
