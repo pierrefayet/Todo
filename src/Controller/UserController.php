@@ -50,6 +50,9 @@ class UserController extends AbstractController
     public function editUser(User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hashed): RedirectResponse|Response
     {
         $form = $this->createForm(UserType::class, $user);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $form->remove('roles');
+        }
 
         $form->handleRequest($request);
 
@@ -61,7 +64,11 @@ class UserController extends AbstractController
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
-            return $this->redirectToRoute('user_list');
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('user_list');
+            }
+
+            return $this->redirectToRoute('task_list');
         }
 
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
